@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import {ActivatedRoute,Router} from '@angular/router';
 import { NgForm } from '../../../node_modules/@angular/forms';
+import { FirebaseService } from '../service/firebase-service.service';
 @Component({
   selector: 'app-add-wiki',
   templateUrl: './add-wiki.component.html',
@@ -12,7 +12,7 @@ export class AddWikiComponent implements OnInit {
   title: string = "Add Wiki"
   id;
   
-  constructor(private db: AngularFireDatabase,private route:ActivatedRoute,private router:Router) { 
+  constructor(private firebaseService: FirebaseService,private route:ActivatedRoute,private router:Router) { 
    
   }
 
@@ -25,14 +25,14 @@ if(this.id){
   }
   addWiki(data:NgForm){
     if(this.id){
-    this.db.list("/wikis").update(this.id,data.value).then(this.goToHome);
+    this.firebaseService.editWiki(this.id,data.value).then(this.goToHome);
     }else{
-      this.db.list("/wikis").push(data.value).then(this.goToHome);
+      this.firebaseService.addWiki("/wikis").push(data.value).then(this.goToHome);
     }
   }
 getWikiByKey(id){
-  this.wiki=this.db.object('wikis/' +id).snapshotChanges().map(res=>{
-    return res.payload.val();
+  this.firebaseService.getWiki(id).subscribe(data=>{
+    this.wiki = data;
   })
 }
 goToHome=()=>{

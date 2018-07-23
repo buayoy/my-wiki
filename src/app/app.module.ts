@@ -14,7 +14,7 @@ import { AddAndshowComponent } from './add-andshow/add-andshow.component';
 import { Add2Component } from './add2/add2.component';
 import { TestComponent } from './test/test.component';
 import { ListsComponent } from './lists/lists.component';
-
+import { FirebaseService } from './service/firebase-service.service';
 
 
 @NgModule({
@@ -39,10 +39,10 @@ import { ListsComponent } from './lists/lists.component';
     messagingSenderId: "344959569062"}),
     AngularFireDatabaseModule,
     RouterModule,
-    AppRoutingModule
+    AppRoutingModule,
 
   ],
-  providers: [],
+  providers: [FirebaseService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
